@@ -4,6 +4,7 @@ import { styles } from './styles';
 import { Input } from '@/components/input';
 import { Feather } from '@expo/vector-icons';
 import { theme } from '@/theme';
+import { Contact } from '@/components/contact';
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -29,6 +30,12 @@ export default function Home() {
           />
         </Input>
       </View>
+      <Contact
+        contact={{
+          name: 'Leonardo',
+          image: require('@/assets/images/uifaces-popular-image.jpg'),
+        }}
+      />
     </View>
   );
 }
