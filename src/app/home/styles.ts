@@ -34,4 +34,10 @@ export const styles = StyleSheet.create({
     paddingTop: 64,
     gap: 12,
   },
+  separator: {
+    width: '100%',
+    height: 1,
+    backgroundColor: theme.colors.slate[200],
+    marginVertical: 12,
+  },
 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useId } from 'react';
+import React, { useEffect, useState, useId, useRef } from 'react';
 import { Alert, View, SectionList, Text } from 'react-native';
 import { styles } from './styles';
 import { Input } from '@/components/input';
@@ -6,6 +6,9 @@ import { Feather } from '@expo/vector-icons';
 import { theme } from '@/theme';
 import { Contact, ContactProps } from '@/components/contact';
 import * as Contacts from 'expo-contacts';
+
+import BottomSheet from '@gorhom/bottom-sheet';
+import { Avatar } from '@/components/avatar';
 
 type SectionListProps = {
   title: string;
@@ -16,11 +19,22 @@ export default function Home() {
   const [name, setName] = useState('');
   const [contacts, setContacts] = useState<SectionListProps[]>([]);
 
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  const handleBottomSheetOpen = () => bottomSheetRef.current?.expand();
+  const handleBottomSheetClose = () => bottomSheetRef.current?.snapToIndex(0);
+
+  function handleOpenDetailsContact(id: string): void {
+    console.warn(id);
+    handleBottomSheetOpen();
+  }
+
   async function fetchContacts() {
     try {
       const { status } = await Contacts.requestPermissionsAsync();
       if (status === Contacts.PermissionStatus.GRANTED) {
         const { data } = await Contacts.getContactsAsync({
+          name,
           sort: 'firstName',
         });
         const list = data
@@ -54,7 +68,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchContacts();
-  });
+  }, [name]);
 
   return (
     <View style={styles.container}>
@@ -82,12 +96,24 @@ export default function Home() {
         sections={contacts}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Contact contact={item} />}
+        renderItem={({ item }) => (
+          <Contact
+            onPress={() => handleOpenDetailsContact(item.id)}
+            contact={item}
+          />
+        )}
         renderSectionHeader={({ section }) => (
           <Text style={styles.section}>{section.title}</Text>
         )}
         contentContainerStyle={styles.contentContainer}
+        ItemSeparatorComponent={() => <View style={styles.separator}></View>}
       />
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={[0.01, 284]}
+      >
+        <Avatar name='Leonardo' />
+      </BottomSheet>
     </View>
   );
 }
