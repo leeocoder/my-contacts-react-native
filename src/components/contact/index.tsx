@@ -9,6 +9,7 @@ import { Avatar } from '../avatar';
 import { styles } from './styles';
 
 export type ContactProps = {
+  id: string;
   name: string;
   image?: ImageProps;
 };
