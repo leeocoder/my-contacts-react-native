@@ -10,5 +10,10 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: 132,
     backgroundColor: theme.colors.blue[800],
+    justifyContent: 'flex-end',
+    paddingHorizontal: 24,
+  },
+  input: {
+    marginBottom: -27,
   },
 });

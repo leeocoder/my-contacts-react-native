@@ -2,14 +2,19 @@ import { TextInput, TextInputProps, View, ViewProps } from 'react-native';
 
 import { styles } from './styles';
 import { theme } from '@/theme';
-import { Children } from 'react';
 
-function Input({ children }: ViewProps) {
-  return <View style={styles.container}>{Children}</View>;
+function Input({ children, style }: ViewProps) {
+  return <View style={[styles.container, style]}>{children}</View>;
 }
 
 function Field({ ...rest }: TextInputProps) {
-  return <TextInput {...rest} />;
+  return (
+    <TextInput
+      {...rest}
+      style={styles.input}
+      placeholderTextColor={theme.colors.slate[300]}
+    />
+  );
 }
 
 Input.Field = Field;
