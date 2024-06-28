@@ -40,4 +40,39 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.slate[200],
     marginVertical: 12,
   },
+  bottomSheet: {
+    backgroundColor: 'transparent',
+  },
+  details: {
+    flex: 1,
+    backgroundColor: theme.colors.slate[50],
+    borderTopStartRadius: 32,
+    borderTopEndRadius: 32,
+    paddingTop: 64,
+    paddingHorizontal: 24,
+    alignItems: 'center',
+  },
+  avatar: {
+    marginBottom: -50,
+    zIndex: 1,
+    alignSelf: 'center',
+  },
+  detailsName: {
+    color: theme.colors.slate[700],
+    fontSize: 32,
+    fontFamily: theme.fontFamily.medium,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  phoneNumber: {
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center',
+    color: theme.colors.slate[400],
+    marginBottom: 24,
+  },
+  phone: {
+    fontSize: 18,
+    fontFamily: theme.fontFamily.medium,
+  },
 });

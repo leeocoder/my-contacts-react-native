@@ -9,6 +9,7 @@ import * as Contacts from 'expo-contacts';
 
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Avatar } from '@/components/avatar';
+import { Button } from '@/components/button';
 
 type SectionListProps = {
   title: string;
@@ -17,6 +18,7 @@ type SectionListProps = {
 
 export default function Home() {
   const [name, setName] = useState('');
+  const [contact, setContact] = useState<Contacts.Contact>();
   const [contacts, setContacts] = useState<SectionListProps[]>([]);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -24,8 +26,9 @@ export default function Home() {
   const handleBottomSheetOpen = () => bottomSheetRef.current?.expand();
   const handleBottomSheetClose = () => bottomSheetRef.current?.snapToIndex(0);
 
-  function handleOpenDetailsContact(id: string): void {
-    console.warn(id);
+  async function handleOpenDetailsContact(id: string): Promise<void> {
+    const response = await Contacts.getContactByIdAsync(id);
+    setContact(response);
     handleBottomSheetOpen();
   }
 
@@ -59,6 +62,7 @@ export default function Home() {
             return acc;
           }, []);
         setContacts(list);
+        setContact(data[0]);
       }
     } catch (error) {
       console.error(error);
@@ -108,12 +112,39 @@ export default function Home() {
         contentContainerStyle={styles.contentContainer}
         ItemSeparatorComponent={() => <View style={styles.separator}></View>}
       />
-      <BottomSheet
-        ref={bottomSheetRef}
-        snapPoints={[0.01, 284]}
-      >
-        <Avatar name='Leonardo' />
-      </BottomSheet>
+      {contact && (
+        <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={[0.01, 284]}
+          handleComponent={() => null}
+          backgroundStyle={styles.bottomSheet}
+        >
+          <Avatar
+            name={contact.name}
+            variant='large'
+            containerStyle={styles.avatar}
+          />
+          <View style={styles.details}>
+            <Text style={styles.detailsName}>{contact.name}</Text>
+            {contact?.phoneNumbers?.length && (
+              <View style={styles.phoneNumber}>
+                <Feather
+                  name='phone'
+                  size={18}
+                  color={theme.colors.slate[300]}
+                />
+                <Text style={styles.phone}>
+                  {contact.phoneNumbers[0].number}
+                </Text>
+              </View>
+            )}
+            <Button
+              title='Fechar'
+              onPress={handleBottomSheetClose}
+            />
+          </View>
+        </BottomSheet>
+      )}
     </View>
   );
 }

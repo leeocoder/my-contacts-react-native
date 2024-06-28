@@ -1,7 +1,13 @@
-import { Image, ImageProps, Text, View } from 'react-native';
+import {
+  Image,
+  ImageProps,
+  StyleProp,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { styles } from './styles';
-import { theme } from '@/theme';
 
 const variants = {
   size: {
@@ -30,11 +36,17 @@ interface Props {
   image?: ImageProps;
   name: string;
   variant?: 'medium' | 'large';
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
-export function Avatar({ image, name, variant = 'medium' }: Props) {
+export function Avatar({
+  image,
+  name,
+  variant = 'medium',
+  containerStyle,
+}: Props) {
   return (
-    <View>
+    <View style={containerStyle}>
       {image ? (
         <Image
           source={image}
